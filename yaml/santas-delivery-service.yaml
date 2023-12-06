@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: santas-delivery-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: santas-delivery
+  template:
+    metadata:
+      labels:
+        app: santas-delivery
+    spec:
+      containers:
+      - name: santas-delivery-container
+        image: ghcr.io/cloudnativeweekly/santas-delivery-service:1.0.0
+        ports:
+        - containerPort: 5000
+        env:
+        - name: NAMESPACE_CONNECTION_STR
+          valueFrom:
+            secretKeyRef:
+              name: santassecrets
+              key: SERVICEBUS_QUEUE_CONNECTIONSTRING
+        - name: QUEUE_NAME
+          value: "presents"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: santas-delivery-service
+spec:
+  selector:
+    app: santas-delivery
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer

@@ -1,0 +1,41 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: sb-connection
+spec:
+  podIdentity:
+    provider: none
+  secretTargetRef:
+  - parameter: connection
+    name: santassecrets
+    key: SERVICEBUS_QUEUE_CONNECTIONSTRING
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: present
+  namespace: default
+spec:
+  jobTargetRef:
+    parallelism: 20
+    completions: 1
+    template:
+      spec:
+        containers:
+        - name: present-processor-container
+          image: ghcr.io/cloudnativeweekly/present-processor:1.0.0
+          env:
+          - name: NAMESPACE_CONNECTION_STR
+            valueFrom:
+              secretKeyRef:
+                name: santassecrets
+                key: SERVICEBUS_QUEUE_CONNECTIONSTRING
+          - name: QUEUE_NAME
+            value: "presents" 
+  triggers:
+  - type: azure-servicebus
+    metadata:
+      queueName: presents
+      messageCount: "20"
+    authenticationRef:
+      name: sb-connection
