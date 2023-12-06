@@ -19,6 +19,7 @@ spec:
   jobTargetRef:
     parallelism: 20
     completions: 1
+    ttlSecondsAfterFinished: 120
     template:
       spec:
         containers:
