@@ -17,8 +17,9 @@ To run the sample application the following resources are required:
 4. Encode the AWS connection string from the Shared Access Policy in Base64
 5. Update _secret.yaml_ in the /yaml directory with the Base64 encoded connection string 
 6. Configure KEDA on your Azure Kubernetes Services cluster: https://learn.microsoft.com/en-us/azure/aks/keda-deploy-add-on-cli
+TLDR;
 ```AzureCLI
-TLDR; az aks update --resource-group <RG-NAME> --name <CLUSTER-NAME> --enable-keda
+az aks update --resource-group <RG-NAME> --name <CLUSTER-NAME> --enable-keda
 ```
 8. Deploy the solution as follows:
 ```AzureCLI
