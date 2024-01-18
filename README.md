@@ -31,4 +31,5 @@ kubectl apply -f .\yaml\keda-elves.yaml
 That should be sufficient for you to submit presents to Azure Service Bus for processing! 
 
 ### Video
-As part of Festive Tech Calendar 2023 we have recorded a video going through these steps: LINK HERE ONCE AVAILABLE
+As part of Festive Tech Calendar 2023 we have recorded a video going through these steps: https://www.youtube.com/watch?v=ld2g1k2oBxE
+
